@@ -1,0 +1,87 @@
+# Decap CMS Configuration
+# Owner edits content at: yoursite.com/admin
+# Auth: GitHub OAuth via Cloudflare Pages / Netlify Identity
+
+backend:
+  name: git-gateway
+  branch: main
+
+# Enable the editorial workflow (draft → review → publish)
+# Remove this line to publish immediately on save
+# publish_mode: editorial_workflow
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+locale: "en"
+
+collections:
+  # ─── PRODUCTS ────────────────────────────────────────────────
+  - name: "products"
+    label: "Products"
+    label_singular: "Product"
+    folder: "src/content/products"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Product Name", name: "title", widget: "string" }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "Necklaces", value: "necklaces" }
+          - { label: "Rings", value: "rings" }
+          - { label: "Earrings", value: "earrings" }
+          - { label: "Bracelets", value: "bracelets" }
+          - { label: "Sets", value: "sets" }
+      - { label: "Price", name: "price", widget: "string", hint: "e.g. 45,000 FCFA or $75" }
+      - { label: "Product Image", name: "image", widget: "image" }
+      - { label: "Image Alt Text", name: "imageAlt", widget: "string" }
+      - { label: "Short Description", name: "description", widget: "text" }
+      - { label: "Featured (show in hero)", name: "featured", widget: "boolean", default: false }
+      - { label: "Available", name: "available", widget: "boolean", default: true }
+      - { label: "Full Details", name: "body", widget: "markdown", required: false }
+
+  # ─── SITE SETTINGS ────────────────────────────────────────────
+  - name: "settings"
+    label: "Site Settings"
+    files:
+      - label: "General"
+        name: "site"
+        file: "src/content/settings/site.md"
+        fields:
+          - { label: "Business Name", name: "businessName", widget: "string" }
+          - { label: "Tagline", name: "tagline", widget: "string" }
+          - { label: "WhatsApp Number", name: "whatsapp", widget: "string", hint: "Include country code, e.g. +22507XXXXXXXX" }
+          - { label: "Address", name: "address", widget: "string" }
+          - { label: "Instagram Handle", name: "instagram", widget: "string", required: false }
+          - { label: "Facebook Page URL", name: "facebook", widget: "string", required: false }
+          - { label: "Email", name: "email", widget: "string", required: false }
+          - { label: "SEO Description", name: "seoDescription", widget: "text" }
+
+      - label: "About"
+        name: "about"
+        file: "src/content/settings/about.md"
+        fields:
+          - { label: "Section Title", name: "title", widget: "string" }
+          - { label: "Subtitle", name: "subtitle", widget: "string" }
+          - { label: "Story", name: "body", widget: "markdown" }
+          - { label: "Image", name: "image", widget: "image", required: false }
+          - { label: "Image Alt", name: "imageAlt", widget: "string", required: false }
+          - { label: "Years in Business", name: "years", widget: "number", required: false }
+          - { label: "Pieces Crafted", name: "pieces", widget: "number", required: false }
+          - { label: "Happy Clients", name: "clients", widget: "number", required: false }
+
+  # ─── TESTIMONIALS ─────────────────────────────────────────────
+  - name: "testimonials"
+    label: "Testimonials"
+    label_singular: "Testimonial"
+    folder: "src/content/testimonials"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Customer Name", name: "name", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - { label: "Review", name: "review", widget: "text" }
+      - { label: "Rating (1-5)", name: "rating", widget: "number", min: 1, max: 5, default: 5 }
+      - { label: "Photo", name: "photo", widget: "image", required: false }

@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+const testimonials = await getCollection('testimonials');
+---
+
+<section id="testimonials" class="py-28 bg-ink relative overflow-hidden">
+  <!-- Gold line dividers -->
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold/20 to-transparent" />
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16 reveal">
+      <span class="inline-block text-xs tracking-[0.4em] uppercase text-gold/70 mb-4">Témoignages</span>
+      <h2 class="font-display text-4xl md:text-6xl font-light text-cream">
+        Ce Que Disent Nos Clients
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 stagger">
+      {testimonials.map((t, i) => (
+        <div
+          class="reveal p-8 border border-gold/10 hover:border-gold/30 transition-all duration-500 relative group"
+          style={`transition-delay: ${i * 120}ms`}
+        >
+          <!-- Quote mark -->
+          <div class="absolute top-6 right-8 font-display text-7xl text-gold/10 leading-none select-none group-hover:text-gold/20 transition-colors duration-500">
+            "
+          </div>
+
+          <!-- Stars -->
+          <div class="flex gap-1 mb-6" aria-label={`${t.data.rating} sur 5 étoiles`}>
+            {Array.from({ length: 5 }).map((_, idx) => (
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill={idx < t.data.rating ? '#D4AF37' : 'none'}
+                stroke="#D4AF37"
+                stroke-width="1.5"
+              >
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+            ))}
+          </div>
+
+          <blockquote class="text-cream/70 leading-relaxed font-light mb-8 italic">
+            "{t.data.review}"
+          </blockquote>
+
+          <div class="flex items-center gap-3">
+            {t.data.photo ? (
+              <img
+                src={t.data.photo}
+                alt={t.data.name}
+                class="w-10 h-10 rounded-full object-cover border border-gold/20"
+                loading="lazy"
+              />
+            ) : (
+              <div class="w-10 h-10 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center">
+                <span class="text-gold font-display text-lg font-light">
+                  {t.data.name.charAt(0)}
+                </span>
+              </div>
+            )}
+            <div>
+              <p class="text-cream text-sm font-medium">{t.data.name}</p>
+              <p class="text-cream/40 text-xs tracking-wider">{t.data.location}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

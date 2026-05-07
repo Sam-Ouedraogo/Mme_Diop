@@ -1,0 +1,106 @@
+---
+import { getEntry } from 'astro:content';
+const aboutData = await getEntry('settings', 'about');
+const about = aboutData?.data;
+const { Content } = await aboutData!.render();
+---
+
+<section id="about" class="py-28 bg-cream-gradient text-ink relative overflow-hidden">
+  <!-- Decorative gold circle -->
+  <div
+    class="absolute -top-40 -right-40 w-[500px] h-[500px] rounded-full border border-gold/20 pointer-events-none"
+    aria-hidden="true"
+  />
+  <div
+    class="absolute top-20 right-20 w-[300px] h-[300px] rounded-full border border-gold/10 pointer-events-none"
+    aria-hidden="true"
+  />
+
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+
+      <!-- Left: Image -->
+      <div class="reveal-left relative">
+        <div class="relative aspect-[4/5] bg-gradient-to-br from-ink-muted to-ink overflow-hidden">
+          <!-- Placeholder / real image -->
+          {about?.image ? (
+            <img
+              src={about.image}
+              alt={about.imageAlt ?? 'Our workshop'}
+              class="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div class="absolute inset-0 flex items-center justify-center">
+              <svg width="120" height="200" viewBox="0 0 120 200" fill="none" class="opacity-20">
+                <rect x="20" y="20" width="80" height="160" rx="2" stroke="#D4AF37" stroke-width="1"/>
+                <circle cx="60" cy="80" r="25" stroke="#D4AF37" stroke-width="1"/>
+                <path d="M35 130 Q60 110 85 130" stroke="#D4AF37" stroke-width="1" fill="none"/>
+                <line x1="60" y1="20" x2="60" y2="45" stroke="#D4AF37" stroke-width="1"/>
+              </svg>
+            </div>
+          )}
+
+          <!-- Gold frame accent -->
+          <div class="absolute inset-0 border border-gold/20" />
+        </div>
+
+        <!-- Offset gold square decoration -->
+        <div class="absolute -bottom-6 -right-6 w-32 h-32 border border-gold/30 -z-10" />
+        <div class="absolute -top-6 -left-6 w-20 h-20 border border-gold/20 -z-10" />
+      </div>
+
+      <!-- Right: Text -->
+      <div class="reveal-right">
+        <span class="inline-block text-xs tracking-[0.4em] uppercase text-gold/70 mb-4">
+          Qui Sommes-Nous
+        </span>
+        <h2 class="font-display text-4xl md:text-5xl font-light text-ink mb-2">
+          {about?.title ?? 'Our Story'}
+        </h2>
+        <p class="font-display text-xl italic text-gold/80 mb-8">
+          {about?.subtitle ?? 'Born from the heart of West Africa'}
+        </p>
+
+        <div class="prose prose-lg text-ink/70 leading-relaxed space-y-4 font-light">
+          <Content />
+        </div>
+
+        <!-- Stats -->
+        {(about?.years || about?.pieces || about?.clients) && (
+          <div class="grid grid-cols-3 gap-6 mt-12 pt-12 border-t border-gold/20">
+            {about?.years && (
+              <div class="text-center reveal">
+                <div class="font-display text-4xl font-light text-gold mb-1">
+                  {about.years}
+                </div>
+                <div class="text-xs tracking-widest uppercase text-ink/50">Ans</div>
+              </div>
+            )}
+            {about?.pieces && (
+              <div class="text-center reveal" style="transition-delay: 100ms">
+                <div class="font-display text-4xl font-light text-gold mb-1">
+                  {about.pieces.toLocaleString()}+
+                </div>
+                <div class="text-xs tracking-widest uppercase text-ink/50">Pièces</div>
+              </div>
+            )}
+            {about?.clients && (
+              <div class="text-center reveal" style="transition-delay: 200ms">
+                <div class="font-display text-4xl font-light text-gold mb-1">
+                  {about.clients.toLocaleString()}+
+                </div>
+                <div class="text-xs tracking-widest uppercase text-ink/50">Clients</div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .prose p { margin-bottom: 1rem; }
+  .prose strong { font-weight: 500; color: #0A0A0A; }
+</style>

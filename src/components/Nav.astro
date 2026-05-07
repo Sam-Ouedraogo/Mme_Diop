@@ -1,0 +1,149 @@
+---
+import { getEntry } from 'astro:content';
+const siteData = await getEntry('settings', 'site');
+const site = siteData?.data;
+---
+
+<header id="nav" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <nav class="flex items-center justify-between h-20">
+      <!-- Logo -->
+      <a href="#hero" class="group flex flex-col leading-none">
+        <span class="font-display text-2xl font-light tracking-widest text-gold group-hover:text-gold-light transition-colors duration-300">
+          {site?.businessName ?? 'Bijoux Dorée'}
+        </span>
+        <span class="text-xs tracking-[0.3em] text-gold/50 uppercase font-light">
+          Bijoux d'Afrique de l'Ouest
+        </span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <ul class="hidden md:flex items-center gap-10">
+        {[
+          { href: '#collections', label: 'Collections' },
+          { href: '#about', label: 'Notre Histoire' },
+          { href: '#gallery', label: 'Galerie' },
+          { href: '#testimonials', label: 'Avis' },
+          { href: '#contact', label: 'Contact' },
+        ].map(({ href, label }) => (
+          <li>
+            <a
+              href={href}
+              class="text-sm tracking-widest uppercase text-cream/70 hover:text-gold transition-colors duration-300 relative group"
+            >
+              {label}
+              <span class="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-300" />
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- CTA + Hamburger -->
+      <div class="flex items-center gap-4">
+        <a
+          href={`https://wa.me/${site?.whatsapp?.replace(/[^0-9]/g, '')}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden md:inline-flex items-center gap-2 px-5 py-2.5 border border-gold/40 text-gold text-sm tracking-widest uppercase hover:bg-gold hover:text-ink transition-all duration-300"
+        >
+          Commander
+        </a>
+
+        <!-- Hamburger (mobile) -->
+        <button
+          id="menu-toggle"
+          aria-label="Ouvrir le menu"
+          class="md:hidden flex flex-col gap-1.5 p-2"
+        >
+          <span class="block w-6 h-px bg-cream transition-all duration-300" id="ham-1" />
+          <span class="block w-6 h-px bg-cream transition-all duration-300" id="ham-2" />
+          <span class="block w-4 h-px bg-gold transition-all duration-300 ml-auto" id="ham-3" />
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div
+    id="mobile-menu"
+    class="md:hidden overflow-hidden max-h-0 transition-all duration-500 bg-ink/98 backdrop-blur-sm border-t border-gold/10"
+  >
+    <ul class="flex flex-col px-6 py-6 gap-1">
+      {[
+        { href: '#collections', label: 'Collections' },
+        { href: '#about', label: 'Notre Histoire' },
+        { href: '#gallery', label: 'Galerie' },
+        { href: '#testimonials', label: 'Avis' },
+        { href: '#contact', label: 'Contact' },
+      ].map(({ href, label }) => (
+        <li>
+          <a
+            href={href}
+            class="mobile-link block py-4 border-b border-gold/10 text-sm tracking-widest uppercase text-cream/70 hover:text-gold transition-colors duration-300"
+          >
+            {label}
+          </a>
+        </li>
+      ))}
+      <li class="pt-4">
+        <a
+          href={`https://wa.me/${site?.whatsapp?.replace(/[^0-9]/g, '')}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mobile-link flex items-center gap-2 px-5 py-3 border border-gold/40 text-gold text-sm tracking-widest uppercase justify-center hover:bg-gold hover:text-ink transition-all duration-300"
+        >
+          Commander via WhatsApp
+        </a>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<script>
+  const nav = document.getElementById('nav')!;
+  const menuToggle = document.getElementById('menu-toggle')!;
+  const mobileMenu = document.getElementById('mobile-menu')!;
+  const ham1 = document.getElementById('ham-1')!;
+  const ham2 = document.getElementById('ham-2')!;
+  const ham3 = document.getElementById('ham-3')!;
+  let menuOpen = false;
+
+  // Scroll-aware nav styling
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 60) {
+      nav.classList.add('bg-ink/95', 'backdrop-blur-md', 'border-b', 'border-gold/10', 'shadow-lg');
+    } else {
+      nav.classList.remove('bg-ink/95', 'backdrop-blur-md', 'border-b', 'border-gold/10', 'shadow-lg');
+    }
+  }, { passive: true });
+
+  // Mobile menu toggle
+  menuToggle.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    if (menuOpen) {
+      mobileMenu.style.maxHeight = mobileMenu.scrollHeight + 'px';
+      ham1.style.transform = 'rotate(45deg) translate(4px, 4px)';
+      ham2.style.opacity = '0';
+      ham3.style.transform = 'rotate(-45deg) translate(2px, -2px)';
+      ham3.style.width = '24px';
+    } else {
+      mobileMenu.style.maxHeight = '0';
+      ham1.style.transform = '';
+      ham2.style.opacity = '1';
+      ham3.style.transform = '';
+      ham3.style.width = '';
+    }
+  });
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.mobile-link').forEach((link) => {
+    link.addEventListener('click', () => {
+      menuOpen = false;
+      mobileMenu.style.maxHeight = '0';
+      ham1.style.transform = '';
+      ham2.style.opacity = '1';
+      ham3.style.transform = '';
+      ham3.style.width = '';
+    });
+  });
+</script>

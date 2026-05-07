@@ -1,0 +1,129 @@
+---
+import { getEntry } from 'astro:content';
+const siteData = await getEntry('settings', 'site');
+const site = siteData?.data;
+---
+
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-ink">
+  <!-- Animated background layers -->
+  <div class="absolute inset-0 z-0">
+    <!-- Dark radial gradient -->
+    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_#1a1200_0%,_#0A0A0A_70%)]" />
+    <!-- Subtle gold orb top-right -->
+    <div
+      class="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full opacity-[0.06]"
+      style="background: radial-gradient(circle, #D4AF37 0%, transparent 70%); animation: pulse-orb 8s ease-in-out infinite;"
+    />
+    <!-- Subtle gold orb bottom-left -->
+    <div
+      class="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full opacity-[0.04]"
+      style="background: radial-gradient(circle, #C9A84C 0%, transparent 70%); animation: pulse-orb 10s ease-in-out infinite reverse;"
+    />
+  </div>
+
+  <!-- Decorative vertical lines -->
+  <div class="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+    <div class="absolute left-[15%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold/10 to-transparent" />
+    <div class="absolute right-[15%] top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-gold/10 to-transparent" />
+  </div>
+
+  <!-- Content -->
+  <div class="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center pt-20">
+    <!-- Overline -->
+    <div class="inline-flex items-center gap-3 mb-8" style="animation: fadeInDown 0.8s ease-out 0.2s both;">
+      <span class="w-8 h-px bg-gold/60" />
+      <span class="text-xs tracking-[0.4em] uppercase text-gold/70 font-light">
+        Bijoux de Luxe d'Afrique de l'Ouest
+      </span>
+      <span class="w-8 h-px bg-gold/60" />
+    </div>
+
+    <!-- Main headline -->
+    <h1
+      class="font-display text-5xl md:text-7xl lg:text-8xl font-light leading-[1.1] mb-8"
+      style="animation: fadeInUp 1s ease-out 0.4s both;"
+    >
+      <span class="block text-cream">Parée d'</span>
+      <span class="block text-gold-shimmer mt-2">Or Africain</span>
+    </h1>
+
+    <!-- Subheadline -->
+    <p
+      class="text-lg md:text-xl text-cream/60 font-light max-w-2xl mx-auto mb-12 leading-relaxed"
+      style="animation: fadeInUp 1s ease-out 0.6s both;"
+    >
+      {site?.tagline ?? 'Handcrafted jewelry that carries the heritage, warmth, and soul of West Africa — made to last a lifetime.'}
+    </p>
+
+    <!-- CTAs -->
+    <div
+      class="flex flex-col sm:flex-row gap-4 justify-center"
+      style="animation: fadeInUp 1s ease-out 0.8s both;"
+    >
+      <a
+        href="#collections"
+        class="group px-10 py-4 bg-gold text-ink text-sm tracking-[0.2em] uppercase font-medium hover:bg-gold-light transition-all duration-300 relative overflow-hidden"
+      >
+        <span class="relative z-10">Découvrir les Collections</span>
+        <span class="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500 skew-x-12" />
+      </a>
+      <a
+        href={`https://wa.me/${site?.whatsapp?.replace(/[^0-9]/g, '')}?text=Bonjour%2C%20j%27aimerais%20en%20savoir%20plus%20sur%20vos%20bijoux.`}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-10 py-4 border border-gold/30 text-gold text-sm tracking-[0.2em] uppercase font-light hover:border-gold hover:bg-gold/5 transition-all duration-300"
+      >
+        Contactez-nous sur WhatsApp
+      </a>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div
+      class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+      style="animation: fadeIn 1s ease-out 1.5s both;"
+    >
+      <span class="text-xs tracking-[0.3em] uppercase text-cream/30">Défiler</span>
+      <div class="w-px h-12 bg-gradient-to-b from-gold/40 to-transparent relative overflow-hidden">
+        <div class="absolute top-0 w-full h-full bg-gold animate-[scrollLine_1.8s_ease-in-out_infinite]" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating jewelry silhouette shapes (CSS-only decorative) -->
+  <div class="absolute right-8 lg:right-20 top-1/2 -translate-y-1/2 hidden lg:block opacity-[0.07]" aria-hidden="true">
+    <svg width="120" height="280" viewBox="0 0 120 280" fill="none" xmlns="http://www.w3.org/2000/svg" style="animation: float 7s ease-in-out infinite;">
+      <ellipse cx="60" cy="30" rx="30" ry="30" stroke="#D4AF37" stroke-width="1.5"/>
+      <line x1="60" y1="60" x2="60" y2="100" stroke="#D4AF37" stroke-width="1"/>
+      <path d="M30 120 Q60 100 90 120 Q60 180 30 120Z" stroke="#D4AF37" stroke-width="1.5" fill="none"/>
+      <line x1="60" y1="180" x2="60" y2="230" stroke="#D4AF37" stroke-width="1"/>
+      <ellipse cx="60" cy="250" rx="20" ry="20" stroke="#D4AF37" stroke-width="1.5"/>
+    </svg>
+  </div>
+</section>
+
+<style>
+  @keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes pulse-orb {
+    0%, 100% { transform: scale(1); opacity: 0.06; }
+    50% { transform: scale(1.1); opacity: 0.1; }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(-50%) translateY(0); }
+    50% { transform: translateY(-50%) translateY(-16px); }
+  }
+  @keyframes scrollLine {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(200%); }
+  }
+</style>
